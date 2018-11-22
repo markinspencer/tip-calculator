@@ -1,40 +1,32 @@
-import * as R from "ramda";
-
 const ACTIONS = {
   BILL_VALUE_INPUT: "BILL_VALUE_INPUT",
-  TIP_PERCENTAGE_INPUT: "TIP_PERCENTAGE_INPUT"
+  TIP_PERCENT_INPUT: "TIP_PERCENT_INPUT"
 };
 
-export const billValueInputAction = value => {
+export const billInputAction = bill => {
   return {
     type: ACTIONS.BILL_VALUE_INPUT,
-    value
+    bill
   };
 };
 
-export const tipPercentageInputAction = value => {
+export const tipPercentInputAction = tipPercent => {
   return {
-    type: ACTIONS.TIP_PERCENTAGE_INPUT,
-    value
+    type: ACTIONS.TIP_PERCENT_INPUT,
+    tipPercent
   };
 };
 
 const update = (action, model) => {
   switch (action.type) {
     case ACTIONS.BILL_VALUE_INPUT: {
-      if (action.value === "")
-        return { ...model, tip: "", bill: "", total: "" };
-
-      const bill = toFloat(action.value);
-      return calculateTip({ ...model, bill });
+      const { bill } = action;
+      return { ...model, bill };
     }
 
-    case ACTIONS.TIP_PERCENTAGE_INPUT: {
-      if (action.value === "")
-        return { ...model, tip: "", tipPercentage: "", total: "" };
-
-      const tipPercentage = toFloat(action.value);
-      return calculateTip({ ...model, tipPercentage });
+    case ACTIONS.TIP_PERCENT_INPUT: {
+      const { tipPercent } = action;
+      return { ...model, tipPercent };
     }
 
     default: {
@@ -42,25 +34,5 @@ const update = (action, model) => {
     }
   }
 };
-
-const calculateTip = model => {
-  const { bill, tipPercentage } = model;
-
-  const tip = bill * (tipPercentage / 100);
-  const total = bill + tip;
-
-  console.log(bill, tipPercentage, tip, total);
-  return {
-    bill,
-    tipPercentage,
-    tip,
-    total
-  };
-};
-
-const toFloat = R.pipe(
-  parseFloat,
-  R.defaultTo(0)
-);
 
 export default update;
