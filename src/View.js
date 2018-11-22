@@ -7,9 +7,9 @@ const { div, h1, pre, label, input, span } = hh(h);
 
 const round = places =>
   R.pipe(
-    num => num * Math.pow(10, places),
+    num => num * 10 ** places,
     Math.round,
-    num => num * Math.pow(10, -1 * places)
+    num => num * 10 ** (-1 * places)
   );
 
 const formatCurrency = R.curry((symbol, places, number) => {
